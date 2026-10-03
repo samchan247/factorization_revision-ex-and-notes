@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factorization Master Class & Arcade</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        factor1: '#3b82f6', // Bright Blue
+                        factor2: '#10b981', // Emerald Green
+                        factor3: '#f59e0b', // Amber/Orange
+                        factor4: '#8b5cf6', // Purple
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .math-font {
+            font-family: 'Fira Code', monospace;
+        }
+        .factor-1 { color: #3b82f6; font-weight: 700; }
+        .factor-2 { color: #10b981; font-weight: 700; }
+        .factor-3 { color: #f59e0b; font-weight: 700; }
+        .factor-4 { color: #8b5cf6; font-weight: 700; }
+        
+        .bg-factor-1 { background-color: #3b82f6; }
+        .bg-factor-2 { background-color: #10b981; }
+        .bg-factor-3 { background-color: #f59e0b; }
+        .bg-factor-4 { background-color: #8b5cf6; }
+
+        .border-factor-1 { border-color: #3b82f6; }
+        .border-factor-2 { border-color: #10b981; }
+        .border-factor-3 { border-color: #f59e0b; }
+        .border-factor-4 { border-color: #8b5cf6; }
+
+        /* Smooth pulse animation for active timer */
+        @keyframes timer-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .timer-warning {
+            animation: timer-pulse 1s infinite;
+            color: #ef4444;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
+
+    <!-- Top Header / Navigation -->
+    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-emerald-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
+                    <i class="fa-solid fa-square-root-variable text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold bg-gradient-to-r from-blue-400 via-emerald-400 to-purple-400 bg-clip-text text-transparent">
+                        Factorization Master
+                    </h1>
+                    <p class="text-xs text-slate-400">Consistent Color Factorization & Arcade</p>
+                </div>
+            </div>
+
+            <!-- Tab Navigation Buttons -->
+            <div class="flex bg-slate-900 p-1.5 rounded-xl border border-slate-800">
+                <button id="tab-guide-btn" onclick="switchTab('guide')" class="px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-blue-600 text-white shadow-md">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Study Guide</span>
+                </button>
+                <button id="tab-arcade-btn" onclick="switchTab('arcade')" class="px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-400 hover:text-slate-200">
+                    <i class="fa-solid fa-gamepad"></i>
+                    <span>Arcade Game</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- TAB 1: STUDY GUIDE / NOTES -->
+        <section id="tab-guide" class="space-y-8">
+            <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-6 shadow-xl">
+                <h2 class="text-2xl font-bold mb-2 text-white flex items-center gap-2">
+                    <i class="fa-solid fa-palette text-blue-400"></i>
+                    Consistent Factor Color Coding System
+                </h2>
+                <p class="text-slate-300 leading-relaxed text-sm md:text-base mb-4">
+                    Every recurring term, monomial factor, or common binomial block is assigned a fixed highlight color across all steps. Follow the colored paths to understand how factors are identified, extracted, and structured!
+                </p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs md:text-sm font-medium">
+                    <div class="bg-slate-900/80 p-3 rounded-xl border border-blue-500/30 flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded-full bg-blue-500 inline-block"></span>
+                        <span class="factor-1">Blue Factor</span>
+                    </div>
+                    <div class="bg-slate-900/80 p-3 rounded-xl border border-emerald-500/30 flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded-full bg-emerald-500 inline-block"></span>
+                        <span class="factor-2">Green Factor</span>
+                    </div>
+                    <div class="bg-slate-900/80 p-3 rounded-xl border border-amber-500/30 flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded-full bg-amber-500 inline-block"></span>
+                        <span class="factor-3">Amber Factor</span>
+                    </div>
+                    <div class="bg-slate-900/80 p-3 rounded-xl border border-purple-500/30 flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded-full bg-purple-500 inline-block"></span>
+                        <span class="factor-4">Purple Factor</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5 Difficulty Levels Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Level 1: HCF -->
+                <div class="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 hover:border-slate-600 transition">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">LEVEL 1 (+10 pts)</span>
+                        <i class="fa-solid fa-filter text-slate-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Highest Common Factor (HCF)</h3>
+                    <p class="text-xs text-slate-400 mb-4">Identify and extract the highest common monomial factor from every term.</p>
+                    
+                    <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 math-font text-sm space-y-2">
+                        <div class="text-slate-400 text-xs font-sans mb-1">Step-by-step breakdown:</div>
+                        <div>Expression: <span class="text-slate-200">12x²y + 18xy²</span></div>
+                        <div>Step 1: Identify Common Monomial <span class="factor-1">6xy</span></div>
+                        <div>Step 2: Rewrite terms: <span class="factor-1">6xy</span>(<span class="factor-2">2x</span>) + <span class="factor-1">6xy</span>(<span class="factor-3">3y</span>)</div>
+                        <div class="pt-2 border-t border-slate-800 text-emerald-400 font-bold">
+                            Factored: <span class="factor-1">6xy</span>(<span class="factor-2">2x</span> + <span class="factor-3">3y</span>)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 2: Grouping -->
+                <div class="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 hover:border-slate-600 transition">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">LEVEL 2 (+15 pts)</span>
+                        <i class="fa-solid fa-object-group text-slate-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Factoring by Grouping (Pairwise)</h3>
+                    <p class="text-xs text-slate-400 mb-4">Group terms into pairs, factor out HCFs to reveal a common binomial factor.</p>
+                    
+                    <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 math-font text-sm space-y-2">
+                        <div class="text-slate-400 text-xs font-sans mb-1">Step-by-step breakdown:</div>
+                        <div>Expression: <span class="text-slate-200">ax + ay + bx + by</span></div>
+                        <div>Step 1: Group pairs: <span class="factor-1">a</span>(<span class="factor-3">x + y</span>) + <span class="factor-2">b</span>(<span class="factor-3">x + y</span>)</div>
+                        <div>Step 2: Extract common binomial (<span class="factor-3">x + y</span>)</div>
+                        <div class="pt-2 border-t border-slate-800 text-emerald-400 font-bold">
+                            Factored: (<span class="factor-1">a</span> + <span class="factor-2">b</span>)(<span class="factor-3">x + y</span>)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 3: Basic Identities -->
+                <div class="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 hover:border-slate-600 transition">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">LEVEL 3 (+20 pts)</span>
+                        <i class="fa-solid fa-cubes text-slate-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Basic Special Identities</h3>
+                    <p class="text-xs text-slate-400 mb-4">Difference of Two Squares & Perfect Square Trinomials.</p>
+                    
+                    <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 math-font text-sm space-y-2">
+                        <div class="text-slate-400 text-xs font-sans mb-1">Formula & Breakdown:</div>
+                        <div>Identity: <span class="factor-1">A</span>² - <span class="factor-2">B</span>² = (<span class="factor-1">A</span> - <span class="factor-2">B</span>)(<span class="factor-1">A</span> + <span class="factor-2">B</span>)</div>
+                        <div>Example: <span class="text-slate-200">9x² - 16y²</span> = (<span class="factor-1">3x</span>)² - (<span class="factor-2">4y</span>)²</div>
+                        <div class="pt-2 border-t border-slate-800 text-emerald-400 font-bold">
+                            Factored: (<span class="factor-1">3x</span> - <span class="factor-2">4y</span>)(<span class="factor-1">3x</span> + <span class="factor-2">4y</span>)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 4: Nested Identities with HCF -->
+                <div class="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 hover:border-slate-600 transition">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-purple-500/20 text-purple-400 border border-purple-500/30">LEVEL 4 (+25 pts)</span>
+                        <i class="fa-solid fa-layer-group text-slate-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Nested Identities with HCF</h3>
+                    <p class="text-xs text-slate-400 mb-4">Always pull out the HCF first, then factor the remaining polynomial using an identity.</p>
+                    
+                    <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 math-font text-sm space-y-2">
+                        <div class="text-slate-400 text-xs font-sans mb-1">Step-by-step breakdown:</div>
+                        <div>Expression: <span class="text-slate-200">50x² - 98y²</span></div>
+                        <div>Step 1: Extract HCF <span class="factor-1">2</span>(<span class="factor-2">25x²</span> - <span class="factor-3">49y²</span>)</div>
+                        <div>Step 2: Recognize squares: <span class="factor-1">2</span>[(<span class="factor-2">5x</span>)² - (<span class="factor-3">7y</span>)²]</div>
+                        <div class="pt-2 border-t border-slate-800 text-emerald-400 font-bold">
+                            Factored: <span class="factor-1">2</span>(<span class="factor-2">5x</span> - <span class="factor-3">7y</span>)(<span class="factor-2">5x</span> + <span class="factor-3">7y</span>)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 5: Composite Binomial Identities -->
+                <div class="bg-slate-800/50 border border-slate-700/50 rounded-2xl md:col-span-2 p-6 hover:border-slate-600 transition">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">LEVEL 5 (+30 pts)</span>
+                        <i class="fa-solid fa-skull-crossbones text-slate-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Composite Binomial Identities & Multi-Step Squares</h3>
+                    <p class="text-xs text-slate-400 mb-4">Complex expressions involving composite terms like 4(2x+1)² - 9y² or multi-step x⁴ - y⁴.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-900/90 rounded-xl p-4 border border-slate-800 math-font text-sm">
+                        <div class="space-y-2">
+                            <div class="text-slate-400 text-xs font-sans">Type A: Composite Term Squares</div>
+                            <div>Expression: <span class="text-slate-200">4(2x+1)² - 9y²</span></div>
+                            <div>Step 1: [<span class="factor-1">2(2x+1)</span>]² - [<span class="factor-2">3y</span>]²</div>
+                            <div>Step 2: [<span class="factor-1">4x + 2</span>]² - [<span class="factor-2">3y</span>]²</div>
+                            <div class="text-emerald-400 font-bold">Factored: (<span class="factor-1">4x + 2</span> - <span class="factor-2">3y</span>)(<span class="factor-1">4x + 2</span> + <span class="factor-2">3y</span>)</div>
+                        </div>
+                        <div class="space-y-2 border-t md:border-t-0 md:border-l border-slate-800 pt-3 md:pt-0 md:pl-4">
+                            <div class="text-slate-400 text-xs font-sans">Type B: Double Difference of Squares</div>
+                            <div>Expression: <span class="text-slate-200">x⁴ - 16y⁴</span></div>
+                            <div>Step 1: (<span class="factor-1">x²</span> - <span class="factor-2">4y²</span>)(<span class="factor-3">x² + 4y²</span>)</div>
+                            <div>Step 2: Break down the first factor again!</div>
+                            <div class="text-emerald-400 font-bold">Factored: (<span class="factor-1">x</span> - <span class="factor-4">2y</span>)(<span class="factor-1">x</span> + <span class="factor-4">2y</span>)(<span class="factor-3">x² + 4y²</span>)</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 2: ARCADE GAME -->
+        <section id="tab-arcade" class="hidden space-y-6">
+
+            <!-- HUD Scoreboard Header -->
+            <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 flex flex-wrap justify-between items-center gap-4 shadow-xl">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-slate-900 px-4 py-2 rounded-xl border border-slate-700/60 flex items-center space-x-2">
+                        <span class="text-xs uppercase tracking-wider text-slate-400">Score</span>
+                        <span id="hud-score" class="text-2xl font-black text-amber-400">0</span>
+                    </div>
+                    <div class="bg-slate-900 px-4 py-2 rounded-xl border border-slate-700/60 flex items-center space-x-2">
+                        <span class="text-xs uppercase tracking-wider text-slate-400">Level</span>
+                        <span id="hud-level" class="text-lg font-bold text-blue-400">Lvl 1</span>
+                    </div>
+                </div>
+
+                <!-- Lives Counter -->
+                <div class="flex items-center space-x-2 bg-slate-900 px-4 py-2 rounded-xl border border-slate-700/60">
+                    <span class="text-xs uppercase tracking-wider text-slate-400 mr-1">Lives</span>
+                    <div id="hud-lives" class="flex space-x-1 text-xl">
+                        <span>❤️</span><span>❤️</span><span>❤️</span><span>❤️</span><span>❤️</span>
+                    </div>
+                </div>
+
+                <!-- Timer -->
+                <div class="flex items-center space-x-3 bg-slate-900 px-4 py-2 rounded-xl border border-slate-700/60">
+                    <i class="fa-solid fa-clock text-slate-400"></i>
+                    <div id="hud-timer" class="text-2xl font-black math-font text-emerald-400">45s</div>
+                </div>
+            </div>
+
+            <!-- LEVEL SELECTOR BAR -->
+            <div class="flex flex-wrap gap-2 justify-center">
+                <button onclick="selectLevel(1)" id="lvl-btn-1" class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold border transition-all bg-blue-600 border-blue-500 text-white">
+                    Lvl 1: HCF (+10)
+                </button>
+                <button onclick="selectLevel(2)" id="lvl-btn-2" class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold border transition-all bg-slate-800 border-slate-700 text-slate-300 hover:border-slate-500">
+                    Lvl 2: Grouping (+15)
+                </button>
+                <button onclick="selectLevel(3)" id="lvl-btn-3" class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold border transition-all bg-slate-800 border-slate-700 text-slate-300 hover:border-slate-500">
+                    Lvl 3: Identities (+20)
+                </button>
+                <button onclick="selectLevel(4)" id="lvl-btn-4" class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold border transition-all bg-slate-800 border-slate-700 text-slate-300 hover:border-slate-500">
+                    Lvl 4: Nested HCF (+25)
+                </button>
+                <button onclick="selectLevel(5)" id="lvl-btn-5" class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold border transition-all bg-slate-800 border-slate-700 text-slate-300 hover:border-slate-500">
+                    Lvl 5: Composite (+30)
+                </button>
+            </div>
+
+            <!-- PRE-QUESTION / STRATEGY SUMMARY CARD -->
+            <div id="strategy-card" class="bg-gradient-to-br from-slate-800 to-slate-900 border border-blue-500/40 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-500/10 rounded-full blur-2xl"></div>
+                
+                <div class="flex items-center justify-between mb-3">
+                    <span id="strat-method-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                        Method Summary
+                    </span>
+                    <span id="strat-points-badge" class="text-xs font-semibold text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded-lg border border-amber-400/20">
+                        Reward: +10 pts
+                    </span>
+                </div>
+
+                <h3 id="strat-title" class="text-xl font-bold text-white mb-2">Highest Common Factor (HCF)</h3>
+                <p id="strat-desc" class="text-sm text-slate-300 mb-4 leading-relaxed">
+                    Identify terms that divide evenly into all components. Factor out the common term while leaving the simplified quotient in parentheses.
+                </p>
+
+                <div class="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800 text-xs md:text-sm text-slate-300 math-font mb-4" id="strat-formula">
+                    Key Formula: <span class="factor-1">a</span><span class="factor-2">x</span> + <span class="factor-1">a</span><span class="factor-3">y</span> = <span class="factor-1">a</span>(<span class="factor-2">x</span> + <span class="factor-3">y</span>)
+                </div>
+
+                <button onclick="startQuestion()" class="w-full py-3 bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white font-bold rounded-xl shadow-lg shadow-blue-500/20 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-play"></i>
+                    <span>Start Question</span>
+                </button>
+            </div>
+
+            <!-- ACTIVE QUESTION CONTAINER -->
+            <div id="question-card" class="hidden space-y-6">
+
+                <!-- Expression Card -->
+                <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-6 md:p-8 text-center shadow-xl relative">
+                    <span class="text-xs font-semibold tracking-wider text-slate-400 uppercase mb-2 block">Factor the Expression Completely:</span>
+                    <div id="problem-display" class="text-2xl md:text-4xl font-extrabold math-font text-slate-100 py-3 tracking-wide">
+                        <!-- Problem inserted dynamically -->
+                    </div>
+
+                    <!-- Hint Display Area -->
+                    <div id="hint-container" class="mt-4 hidden">
+                        <div class="bg-amber-500/10 border border-amber-500/30 text-amber-200 p-4 rounded-xl text-sm math-font text-left animate-fade-in">
+                            <span class="font-bold font-sans text-amber-400 block mb-1">💡 Hint (Factor Breakdown):</span>
+                            <div id="hint-text"></div>
+                        </div>
+                    </div>
+
+                    <!-- Hint Button -->
+                    <div class="mt-4 flex justify-center">
+                        <button id="hint-btn" onclick="revealHint()" disabled class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-700 text-slate-500 cursor-not-allowed transition flex items-center gap-2">
+                            <i class="fa-solid fa-lightbulb"></i>
+                            <span id="hint-btn-label">Hint (Available at 20s)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Answer Options Grid (A, B, C, D) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="options-grid">
+                    <!-- Dynamic Answer Buttons rendered here -->
+                </div>
+
+            </div>
+
+            <!-- FEEDBACK / EXPLANATION MODAL CARD -->
+            <div id="feedback-card" class="hidden bg-slate-800 border rounded-2xl p-6 shadow-2xl space-y-4">
+                <div class="flex items-center space-x-3" id="feedback-header">
+                    <!-- Icon and Status inserted here -->
+                </div>
+                <div class="text-sm text-slate-300 leading-relaxed bg-slate-900/90 p-4 rounded-xl border border-slate-800 math-font space-y-2" id="feedback-explanation">
+                    <!-- Color-consistent step-by-step solution inserted here -->
+                </div>
+                <button onclick="nextQuestion()" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg transition">
+                    Next Question <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+
+            <!-- GAME OVER CARD -->
+            <div id="gameover-card" class="hidden bg-slate-800/90 border border-red-500/40 rounded-2xl p-8 text-center space-y-6 shadow-2xl">
+                <div class="w-20 h-20 bg-red-500/20 text-red-400 rounded-full flex items-center justify-center mx-auto text-4xl border border-red-500/30">
+                    <i class="fa-solid fa-heart-crack"></i>
+                </div>
+                <h2 class="text-3xl font-black text-white">Game Over!</h2>
+                <p class="text-slate-300 text-sm max-w-md mx-auto">
+                    You ran out of lives! Review the Study Guide to strengthen your factor breakdown strategies and try again.
+                </p>
+                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 max-w-xs mx-auto">
+                    <span class="text-xs text-slate-400 uppercase">Final Score</span>
+                    <div id="final-score" class="text-3xl font-black text-amber-400">0</div>
+                </div>
+                <button onclick="restartGame()" class="px-8 py-3.5 bg-gradient-to-r from-blue-600 to-emerald-600 text-white font-bold rounded-xl shadow-lg hover:brightness-110 transition">
+                    Play Again <i class="fa-solid fa-rotate-right ml-2"></i>
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-950/60 py-4 text-center text-xs text-slate-500">
+        Factorization Master Class & Arcade &bull; Precise Factor-Consistent Color Mapping
+    </footer>
+
+    <script>
+        // Global Game State
+        let currentTab = 'guide';
+        let currentLevel = 1;
+        let score = 0;
+        let lives = 5;
+        let timeLeft = 45;
+        let timerInterval = null;
+        let currentProblem = null;
+        let hintUsed = false;
+
+        // Level Strategies for Pre-Question Cards
+        const LEVEL_STRATEGIES = {
+            1: {
+                title: "Highest Common Factor (HCF)",
+                method: "HCF Extraction",
+                points: 10,
+                desc: "Identify numerical and variable factors common to ALL terms. Extract the HCF outside parentheses while leaving remaining simplified terms inside.",
+                formula: 'Expression: <span class="factor-1">a</span><span class="factor-2">x</span> + <span class="factor-1">a</span><span class="factor-3">y</span> = <span class="factor-1">a</span>(<span class="factor-2">x</span> + <span class="factor-3">y</span>)'
+            },
+            2: {
+                title: "Factoring by Grouping",
+                method: "Pairwise Grouping",
+                points: 15,
+                desc: "Pair up four terms, extract HCFs from each pair to reveal a recurring shared binomial factor, then pull out that binomial.",
+                formula: 'Expression: <span class="factor-1">p</span>(<span class="factor-3">x + y</span>) + <span class="factor-2">q</span>(<span class="factor-3">x + y</span>) = (<span class="factor-1">p</span> + <span class="factor-2">q</span>)(<span class="factor-3">x + y</span>)'
+            },
+            3: {
+                title: "Basic Special Identities",
+                method: "Squares & Trinomials",
+                points: 20,
+                desc: "Apply standard identities: Difference of Squares A² - B² = (A - B)(A + B) or Perfect Square Trinomials (A ± B)².",
+                formula: 'Identity: <span class="factor-1">A</span>² - <span class="factor-2">B</span>² = (<span class="factor-1">A</span> - <span class="factor-2">B</span>)(<span class="factor-1">A</span> + <span class="factor-2">B</span>)'
+            },
+            4: {
+                title: "Nested Identities with HCF",
+                method: "HCF + Identity",
+                points: 25,
+                desc: "Always check for a common monomial HCF first! Once extracted, apply a special identity to the remaining polynomial factor.",
+                formula: 'Nested: <span class="factor-1">k</span><span class="factor-2">A</span>² - <span class="factor-1">k</span><span class="factor-3">B</span>² = <span class="factor-1">k</span>(<span class="factor-2">A</span> - <span class="factor-3">B</span>)(<span class="factor-2">A</span> + <span class="factor-3">B</span>)'
+            },
+            5: {
+                title: "Composite Binomial Identities",
+                method: "Multi-Step Binomials",
+                points: 30,
+                desc: "Factor complex multi-term binomials or multi-step fourth-degree expressions (e.g. [2(x+1)]² - 9y² or x⁴ - y⁴).",
+                formula: 'Composite: [<span class="factor-1">A(x)</span>]² - [<span class="factor-2">B</span>]² = [<span class="factor-1">A(x)</span> - <span class="factor-2">B</span>][<span class="factor-1">A(x)</span> + <span class="factor-2">B</span>]'
+            }
+        };
+
+        // Navigation Tab Switcher
+        function switchTab(tab) {
+            currentTab = tab;
+            const guideTab = document.getElementById('tab-guide');
+            const arcadeTab = document.getElementById('tab-arcade');
+            const guideBtn = document.getElementById('tab-guide-btn');
+            const arcadeBtn = document.getElementById('tab-arcade-btn');
+
+            if (tab === 'guide') {
+                guideTab.classList.remove('hidden');
+                arcadeTab.classList.add('hidden');
+                guideBtn.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-blue-600 text-white shadow-md";
+                arcadeBtn.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-400 hover:text-slate-200";
+            } else {
+                guideTab.classList.add('hidden');
+                arcadeTab.classList.remove('hidden');
+                arcadeBtn.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-blue-600 text-white shadow-md";
+                guideBtn.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-400 hover:text-slate-200";
+            }
+        }
+
+        // Select Level
+        function selectLevel(lvl) {
+            currentLevel = lvl;
+            for (let i = 1; i <= 5; i++) {
+                const btn = document.getElementById(`lvl-btn-${i}`);
+                if (i === lvl) {
+                    btn.className = "px-4 py-2 rounded-xl text-xs md:text-sm font-bold border transition-all bg-blue-600 border-blue-500 text-white shadow-md";
+                } else {
+                    btn.className = "px-4 py-2 rounded-xl text-xs md:text-sm font-bold border transition-all bg-slate-800 border-slate-700 text-slate-300 hover:border-slate-500";
+                }
+            }
+            showStrategyCard();
+        }
+
+        // Display Strategy Card
+        function showStrategyCard() {
+            clearInterval(timerInterval);
+            const strat = LEVEL_STRATEGIES[currentLevel];
+            document.getElementById('strat-method-badge').innerText = strat.method;
+            document.getElementById('strat-points-badge').innerText = `Reward: +${strat.points} pts`;
+            document.getElementById('strat-title').innerText = strat.title;
+            document.getElementById('strat-desc').innerText = strat.desc;
+            document.getElementById('strat-formula').innerHTML = `Key Strategy: ${strat.formula}`;
+
+            document.getElementById('strategy-card').classList.remove('hidden');
+            document.getElementById('question-card').classList.add('hidden');
+            document.getElementById('feedback-card').classList.add('hidden');
+            document.getElementById('gameover-card').classList.add('hidden');
+            document.getElementById('hud-level').innerText = `Lvl ${currentLevel}`;
+        }
+
+        // Start Question Flow
+        function startQuestion() {
+            document.getElementById('strategy-card').classList.add('hidden');
+            document.getElementById('question-card').classList.remove('hidden');
+            document.getElementById('feedback-card').classList.add('hidden');
+            document.getElementById('hint-container').classList.add('hidden');
+
+            hintUsed = false;
+            generateProblem(currentLevel);
+            resetTimer();
+            startTimer();
+        }
+
+        function generateProblem(lvl) {
+            let problem = {};
+
+            if (lvl === 1) {
+                // Level 1: HCF
+                // e.g. 12x²y + 18xy² = 6xy(2x + 3y)
+                const c = pick([3, 4, 5, 6, 8]);
+                const a = pick([2, 3, 4]);
+                const b = pick([3, 5, 7]);
+                const var1 = 'x', var2 = 'y';
+
+                const term1Coef = c * a;
+                const term2Coef = c * b;
+
+                // Colors:
+                // Factor 1 (HCF): c xy (#3b82f6)
+                // Factor 2 (term 1 rest): a x (#10b981)
+                // Factor 3 (term 2 rest): b y (#f59e0b)
+                const hcfRaw = `${c}xy`;
+                const rest1Raw = `${a}x`;
+                const rest2Raw = `${b}y`;
+
+                problem.expr = `${term1Coef}x²y + ${term2Coef}xy²`;
+                
+                // Colorized versions
+                const hcfC = `<span class="factor-1">${hcfRaw}</span>`;
+                const rest1C = `<span class="factor-2">${rest1Raw}</span>`;
+                const rest2C = `<span class="factor-3">${rest2Raw}</span>`;
+
+                problem.correct = `${hcfC}(${rest1C} + ${rest2C})`;
+                
+                problem.options = [
+                    problem.correct,
+                    `<span class="factor-1">${c}x</span>(<span class="factor-2">${a}xy</span> + <span class="factor-3">${b}y²</span>)`,
+                    `<span class="factor-1">${c}xy</span>(${rest1C} - ${rest2C})`,
+                    `<span class="factor-1">${c}y</span>(<span class="factor-2">${a}x²</span> + <span class="factor-3">${b}xy</span>)`
+                ];
+
+                problem.hint = `Extract the highest common monomial factor ${hcfC} from both terms: ${term1Coef}x²y = ${hcfC} · ${rest1C} and ${term2Coef}xy² = ${hcfC} · ${rest2C}.`;
+                
+                problem.explanation = `
+                    <div>Original Expression: <span class="text-white">${problem.expr}</span></div>
+                    <div>1. Find common monomial HCF: ${hcfC}</div>
+                    <div>2. Rewrite each term with HCF: ${hcfC}(${rest1C}) + ${hcfC}(${rest2C})</div>
+                    <div class="text-emerald-400 font-bold pt-1">Fully Factored: ${problem.correct}</div>
+                `;
+
+            } else if (lvl === 2) {
+                // Level 2: Grouping (Pairwise)
+                // e.g. ax + ay + bx + by = a(x + y) + b(x + y) = (a + b)(x + y)
+                const p1 = pick(['a', '2a', '3m', 'p']);
+                const p2 = pick(['b', '3b', '2n', 'q']);
+                const v1 = 'x', v2 = 'y';
+
+                // Colors:
+                // Factor 1: p1 (#3b82f6)
+                // Factor 2: p2 (#10b981)
+                // Factor 3: (x + y) (#f59e0b)
+                const p1C = `<span class="factor-1">${p1}</span>`;
+                const p2C = `<span class="factor-2">${p2}</span>`;
+                const binomC = `<span class="factor-3">${v1} + ${v2}</span>`;
+
+                problem.expr = `${p1}${v1} + ${p1}${v2} + ${p2}${v1} + ${p2}${v2}`;
+                problem.correct = `(${p1C} + ${p2C})(${binomC})`;
+
+                problem.options = [
+                    problem.correct,
+                    `(${p1C} - ${p2C})(${binomC})`,
+                    `(${p1C} + ${p2C})(<span class="factor-3">${v1} - ${v2}</span>)`,
+                    `(${p1C}${p2C})(${binomC})`
+                ];
+
+                problem.hint = `Group terms into two pairs: ${p1C}(${binomC}) + ${p2C}(${binomC}). Notice the shared binomial factor ${binomC}!`;
+
+                problem.explanation = `
+                    <div>Original Expression: <span class="text-white">${problem.expr}</span></div>
+                    <div>1. Group pairs: ${p1C}(${binomC}) + ${p2C}(${binomC})</div>
+                    <div>2. Factor out common binomial (${binomC}):</div>
+                    <div class="text-emerald-400 font-bold pt-1">Fully Factored: ${problem.correct}</div>
+                `;
+
+            } else if (lvl === 3) {
+                // Level 3: Basic Identities (Difference of Squares or Perfect Squares)
+                const isDiff = Math.random() > 0.5;
+
+                if (isDiff) {
+                    const aCo = pick([2, 3, 4, 5]);
+                    const bCo = pick([3, 4, 5, 7]);
+                    
+                    const term1 = `${aCo*aCo}x²`;
+                    const term2 = `${bCo*bCo}y²`;
+
+                    // Factor 1: aCo x (#3b82f6)
+                    // Factor 2: bCo y (#10b981)
+                    const term1C = `<span class="factor-1">${aCo}x</span>`;
+                    const term2C = `<span class="factor-2">${bCo}y</span>`;
+
+                    problem.expr = `${term1} - ${term2}`;
+                    problem.correct = `(${term1C} - ${term2C})(${term1C} + ${term2C})`;
+
+                    problem.options = [
+                        problem.correct,
+                        `(${term1C} - ${term2C})²`,
+                        `(${term1C} + ${term2C})²`,
+                        `(${term1C} - ${term2C})(<span class="factor-1">${aCo}x</span> - <span class="factor-2">${bCo}y</span>)`
+                    ];
+
+                    problem.hint = `Recognize the Difference of Two Squares identity: A² - B² = (A - B)(A + B), where A = ${term1C} and B = ${term2C}.`;
+
+                    problem.explanation = `
+                        <div>Original Expression: <span class="text-white">${problem.expr}</span></div>
+                        <div>1. Express as perfect squares: (${term1C})² - (${term2C})²</div>
+                        <div>2. Apply A² - B² = (A - B)(A + B):</div>
+                        <div class="text-emerald-400 font-bold pt-1">Fully Factored: ${problem.correct}</div>
+                    `;
+                } else {
+                    // Perfect Square Trinomial
+                    const aCo = pick([1, 2, 3]);
+                    const bCo = pick([2, 3, 4]);
+
+                    const term1 = aCo === 1 ? 'x²' : `${aCo*aCo}x²`;
+                    const termMid = `${2 * aCo * bCo}xy`;
+                    const term2 = `${bCo*bCo}y²`;
+
+                    const term1C = `<span class="factor-1">${aCo === 1 ? 'x' : aCo + 'x'}</span>`;
+                    const term2C = `<span class="factor-2">${bCo}y</span>`;
+
+                    problem.expr = `${term1} + ${termMid} + ${term2}`;
+                    problem.correct = `(${term1C} + ${term2C})²`;
+
+                    problem.options = [
+                        problem.correct,
+                        `(${term1C} - ${term2C})²`,
+                        `(${term1C} + ${term2C})(${term1C} - ${term2C})`,
+                        `(${term1C} + <span class="factor-2">${bCo*bCo}y</span>)²`
+                    ];
+
+                    problem.hint = `This is a Perfect Square Trinomial A² + 2AB + B² = (A + B)², with A = ${term1C} and B = ${term2C}.`;
+
+                    problem.explanation = `
+                        <div>Original Expression: <span class="text-white">${problem.expr}</span></div>
+                        <div>1. Identify terms: (${term1C})² + 2(${term1C})(${term2C}) + (${term2C})²</div>
+                        <div>2. Apply Perfect Square Identity:</div>
+                        <div class="text-emerald-400 font-bold pt-1">Fully Factored: ${problem.correct}</div>
+                    `;
+                }
+
+            } else if (lvl === 4) {
+                // Level 4: Nested Identities with HCF
+                // e.g. 50x² - 98y² = 2(25x² - 49y²) = 2(5x - 7y)(5x + 7y)
+                const k = pick([2, 3, 5]);
+                const aCo = pick([2, 3, 4]);
+                const bCo = pick([3, 5, 7]);
+
+                const term1 = k * aCo * aCo;
+                const term2 = k * bCo * bCo;
+
+                // Factor 1 (HCF): k (#3b82f6)
+                // Factor 2: aCo x (#10b981)
+                // Factor 3: bCo y (#f59e0b)
+                const kC = `<span class="factor-1">${k}</span>`;
+                const aC = `<span class="factor-2">${aCo}x</span>`;
+                const bC = `<span class="factor-3">${bCo}y</span>`;
+
+                problem.expr = `${term1}x² - ${term2}y²`;
+                problem.correct = `${kC}(${aC} - ${bC})(${aC} + ${bC})`;
+
+                problem.options = [
+                    problem.correct,
+                    `${kC}(${aC} - ${bC})²`,
+                    `(${aC} - ${bC})(${aC} + ${bC})`,
+                    `${kC}(<span class="factor-2">${aCo*aCo}x</span> - <span class="factor-3">${bCo*bCo}y</span>)`
+                ];
+
+                problem.hint = `First pull out the common monomial HCF ${kC}: ${kC}(${aCo*aCo}x² - ${bCo*bCo}y²). Then apply Difference of Squares to the rest!`;
+
+                problem.explanation = `
+                    <div>Original Expression: <span class="text-white">${problem.expr}</span></div>
+                    <div>1. Extract monomial HCF: ${kC}(${aCo*aCo}x² - ${bCo*bCo}y²)</div>
+                    <div>2. Apply A² - B² inside brackets: ${kC}[(${aC})² - (${bC})²]</div>
+                    <div class="text-emerald-400 font-bold pt-1">Fully Factored: ${problem.correct}</div>
+                `;
+
+            } else if (lvl === 5) {
+                // Level 5: Composite Binomial Identities / Multi-step
+                const isDoubleDiff = Math.random() > 0.5;
+
+                if (isDoubleDiff) {
+                    // x⁴ - 16y⁴ = (x² - 4y²)(x² + 4y²) = (x - 2y)(x + 2y)(x² + 4y²)
+                    const bCo = pick([2, 3]); // bCo^4 -> 16 or 81
+                    const bSq = bCo * bCo;
+                    const bFourth = bSq * bSq;
+
+                    // Factor 1: x (#3b82f6)
+                    // Factor 2: bCo y (#10b981)
+                    // Factor 3: x² + bSq y² (#f59e0b)
+                    const xC = `<span class="factor-1">x</span>`;
+                    const yC = `<span class="factor-2">${bCo === 1 ? 'y' : bCo + 'y'}</span>`;
+                    const sumSqC = `<span class="factor-3">x² + ${bSq === 1 ? '' : bSq}y²</span>`;
+
+                    problem.expr = `x⁴ - ${bFourth}y⁴`;
+                    problem.correct = `(${xC} - ${yC})(${xC} + ${yC})(${sumSqC})`;
+
+                    problem.options = [
+                        problem.correct,
+                        `(<span class="factor-1">x²</span> - <span class="factor-2">${bSq}y²</span>)(${sumSqC})`,
+                        `(${xC} - ${yC})²(${sumSqC})`,
+                        `(${xC} + ${yC})³`
+                    ];
+
+                    problem.hint = `Step 1: Apply A² - B² to get (x² - ${bSq}y²)(${sumSqC}). Step 2: Factor (x² - ${bSq}y²) AGAIN!`;
+
+                    problem.explanation = `
+                        <div>Original Expression: <span class="text-white">${problem.expr}</span></div>
+                        <div>1. First Difference of Squares breakdown: (x² - ${bSq}y²)(${sumSqC})</div>
+                        <div>2. Factor the first binomial term further: (${xC} - ${yC})(${xC} + ${yC})</div>
+                        <div class="text-emerald-400 font-bold pt-1">Fully Factored: ${problem.correct}</div>
+                    `;
+
+                } else {
+                    // Composite Binomial Square: 4(2x+1)² - 9y² = [2(2x+1) - 3y][2(2x+1) + 3y] = (4x + 2 - 3y)(4x + 2 + 3y)
+                    const c1 = 2; // squared = 4
+                    const c2 = pick([3, 5]); // squared = 9 or 25
+                    const aCo = 2;
+                    const bConst = 1;
+
+                    // Factor 1: (4x + 2) (#3b82f6)
+                    // Factor 2: 3y (#10b981)
+                    const term1C = `<span class="factor-1">4x + 2</span>`;
+                    const term2C = `<span class="factor-2">${c2}y</span>`;
+
+                    problem.expr = `4(2x + 1)² - ${c2*c2}y²`;
+                    problem.correct = `(${term1C} - ${term2C})(${term1C} + ${term2C})`;
+
+                    problem.options = [
+                        problem.correct,
+                        `(${term1C} - ${term2C})²`,
+                        `(<span class="factor-1">2x + 1</span> - ${term2C})(<span class="factor-1">2x + 1</span> + ${term2C})`,
+                        `(${term1C} + ${term2C})²`
+                    ];
+
+                    problem.hint = `Rewrite as [2(2x+1)]² - [${c2}y]² = [${term1C}]² - [${term2C}]². Then use A² - B²!`;
+
+                    problem.explanation = `
+                        <div>Original Expression: <span class="text-white">${problem.expr}</span></div>
+                        <div>1. Rewrite bases: [2(2x + 1)]² - [${c2}y]²</div>
+                        <div>2. Expand internal bracket: [${term1C}]² - [${term2C}]²</div>
+                        <div class="text-emerald-400 font-bold pt-1">Fully Factored: ${problem.correct}</div>
+                    `;
+                }
+            }
+
+            currentProblem = problem;
+            renderProblem();
+        }
+
+        // Helper random picker
+        function pick(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        // Render Current Problem to DOM
+        function renderProblem() {
+            document.getElementById('problem-display').innerHTML = currentProblem.expr;
+            document.getElementById('hint-text').innerHTML = currentProblem.hint;
+
+            // Shuffle options
+            const shuffled = [...currentProblem.options].sort(() => Math.random() - 0.5);
+            const badges = ['A', 'B', 'C', 'D'];
+            
+            const optionsGrid = document.getElementById('options-grid');
+            optionsGrid.innerHTML = '';
+
+            shuffled.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.onclick = () => checkAnswer(opt);
+                btn.className = "p-4 bg-slate-800 hover:bg-slate-700/80 border border-slate-700/80 rounded-xl text-left font-medium math-font transition-all flex items-center space-x-3 text-slate-100 shadow-md group hover:border-blue-500/50";
+                
+                btn.innerHTML = `
+                    <span class="w-8 h-8 rounded-lg bg-slate-900 text-blue-400 font-sans font-bold flex items-center justify-center text-sm border border-slate-700 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500 transition-colors">
+                        ${badges[idx]}
+                    </span>
+                    <span class="text-base md:text-lg flex-grow">${opt}</span>
+                `;
+                optionsGrid.appendChild(btn);
+            });
+        }
+
+        // Timer Logic
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const timerDisplay = document.getElementById('hud-timer');
+                timerDisplay.innerText = `${timeLeft}s`;
+
+                // Unlock Hint at <= 20 seconds
+                const hintBtn = document.getElementById('hint-btn');
+                const hintLabel = document.getElementById('hint-btn-label');
+                if (timeLeft <= 20 && !hintUsed) {
+                    hintBtn.disabled = false;
+                    hintBtn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-amber-500/20 border border-amber-500/40 text-amber-300 hover:bg-amber-500/30 cursor-pointer transition flex items-center gap-2 animate-bounce";
+                    hintLabel.innerText = "Click for Hint!";
+                }
+
+                if (timeLeft <= 10) {
+                    timerDisplay.classList.add('timer-warning');
+                } else {
+                    timerDisplay.classList.remove('timer-warning');
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    handleTimeOut();
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            timeLeft = 45;
+            const timerDisplay = document.getElementById('hud-timer');
+            timerDisplay.innerText = "45s";
+            timerDisplay.classList.remove('timer-warning');
+
+            const hintBtn = document.getElementById('hint-btn');
+            const hintLabel = document.getElementById('hint-btn-label');
+            hintBtn.disabled = true;
+            hintBtn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-slate-700 text-slate-500 cursor-not-allowed transition flex items-center gap-2";
+            hintLabel.innerText = "Hint (Available at 20s)";
+        }
+
+        function revealHint() {
+            hintUsed = true;
+            document.getElementById('hint-container').classList.remove('hidden');
+            const hintBtn = document.getElementById('hint-btn');
+            hintBtn.disabled = true;
+            hintBtn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-500 cursor-default flex items-center gap-2 animate-none";
+            document.getElementById('hint-btn-label').innerText = "Hint Revealed";
+        }
+
+        // Check Answer Logic
+        function checkAnswer(selectedOpt) {
+            clearInterval(timerInterval);
+
+            const isCorrect = selectedOpt === currentProblem.correct;
+            const feedbackCard = document.getElementById('feedback-card');
+            const feedbackHeader = document.getElementById('feedback-header');
+            const feedbackExplanation = document.getElementById('feedback-explanation');
+
+            document.getElementById('question-card').classList.add('hidden');
+            feedbackCard.classList.remove('hidden');
+
+            if (isCorrect) {
+                const pts = LEVEL_STRATEGIES[currentLevel].points;
+                score += pts;
+                document.getElementById('hud-score').innerText = score;
+
+                feedbackCard.className = "bg-slate-800 border border-emerald-500/50 rounded-2xl p-6 shadow-2xl space-y-4";
+                feedbackHeader.innerHTML = `
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold border border-emerald-500/30">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-emerald-400">Correct! (+${pts} pts)</h3>
+                        <p class="text-xs text-slate-400">Factors match perfectly!</p>
+                    </div>
+                `;
+            } else {
+                lives--;
+                updateLivesDisplay();
+
+                feedbackCard.className = "bg-slate-800 border border-red-500/50 rounded-2xl p-6 shadow-2xl space-y-4";
+                feedbackHeader.innerHTML = `
+                    <div class="w-10 h-10 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center text-xl font-bold border border-red-500/30">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-red-400">Incorrect! (-1 Life)</h3>
+                        <p class="text-xs text-slate-400">Review the factor breakdown below.</p>
+                    </div>
+                `;
+            }
+
+            feedbackExplanation.innerHTML = currentProblem.explanation;
+
+            if (lives <= 0) {
+                setTimeout(triggerGameOver, 1500);
+            }
+        }
+
+        function handleTimeOut() {
+            lives--;
+            updateLivesDisplay();
+
+            const feedbackCard = document.getElementById('feedback-card');
+            const feedbackHeader = document.getElementById('feedback-header');
+            const feedbackExplanation = document.getElementById('feedback-explanation');
+
+            document.getElementById('question-card').classList.add('hidden');
+            feedbackCard.classList.remove('hidden');
+
+            feedbackCard.className = "bg-slate-800 border border-red-500/50 rounded-2xl p-6 shadow-2xl space-y-4";
+            feedbackHeader.innerHTML = `
+                <div class="w-10 h-10 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center text-xl font-bold border border-red-500/30">
+                    <i class="fa-solid fa-hourglass-end"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-red-400">Time's Up! (-1 Life)</h3>
+                    <p class="text-xs text-slate-400">Speed up your factorization analysis!</p>
+                </div>
+            `;
+            feedbackExplanation.innerHTML = currentProblem.explanation;
+
+            if (lives <= 0) {
+                setTimeout(triggerGameOver, 1500);
+            }
+        }
+
+        function updateLivesDisplay() {
+            const livesContainer = document.getElementById('hud-lives');
+            let hearts = '';
+            for (let i = 0; i < 5; i++) {
+                if (i < lives) {
+                    hearts += '<span>❤️</span>';
+                } else {
+                    hearts += '<span class="opacity-20 grayscale">❤️</span>';
+                }
+            }
+            livesContainer.innerHTML = hearts;
+        }
+
+        function nextQuestion() {
+            if (lives <= 0) {
+                triggerGameOver();
+            } else {
+                showStrategyCard();
+            }
+        }
+
+        function triggerGameOver() {
+            clearInterval(timerInterval);
+            document.getElementById('question-card').classList.add('hidden');
+            document.getElementById('feedback-card').classList.add('hidden');
+            document.getElementById('strategy-card').classList.add('hidden');
+            document.getElementById('gameover-card').classList.remove('hidden');
+            document.getElementById('final-score').innerText = score;
+        }
+
+        function restartGame() {
+            score = 0;
+            lives = 5;
+            document.getElementById('hud-score').innerText = score;
+            updateLivesDisplay();
+            selectLevel(1);
+        }
+
+        // Initialize App on Load
+        window.onload = function() {
+            selectLevel(1);
+        };
+    </script>
+</body>
+</html>
